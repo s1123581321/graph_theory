@@ -35,6 +35,20 @@ def connected_components(graph, mode='depth'):
     return components
 
 
+def largest_connected_component_s(graph, mode='depth'):
+    '''
+    Returns the largest component(s) of an undirected graph
+    graph: Input undirected graph ub adjacency list representation
+    mode : Traversal mode 'depth' or 'breadth', defaults to 'depth' 
+    '''
+    component_list = connected_components(graph, mode)
+    largest_component_size = max([len(component) for component in component_list])
+    largest_component_s = [component for component in component_list if largest_component_size == len(component)]
+    if 1 == len(largest_component_s):
+        largest_component_s = largest_component_s[0]
+    return largest_component_s
+
+
 def pathExists(graph, start_node, end_node, mode='depth'):
     '''
     Returns True/False for if start_node to end_node path exists in the intput graph
