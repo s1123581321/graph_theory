@@ -1,6 +1,6 @@
 from example_graphs import *
 
-def graph_traversal(graph, start_node, mode='depth'):
+def graph_traversal(graph, start_node, mode='breadth'):
     '''
     Returns the traversal of the input graph
     graph     : Input graph in adjacency list representation
@@ -19,7 +19,41 @@ def graph_traversal(graph, start_node, mode='depth'):
     return r
 
 
-def connected_components(graph, mode='depth'):
+def find_path_s(graph, start_node, end_node, return_type='all'):
+    '''
+    Returns the path(s) from the start node to the end node
+    graph      : Input graph in adjacency list representation
+    start_node : Start node of path
+	end_node   : End node of path
+	return_type: Defaults to 'all' to return all paths, 'shortest' returns only the shortest path
+    '''
+    if start_node == end_node:
+        return [[start_node]]
+    return_shortest = {'shortest': True, 'all': False}[return_type]
+    path_found = False
+    no_path = False
+    path_list = [[start_node]]
+    temp_path_list = []
+    good_paths = []
+    while (not (path_found and return_shortest)) and (not no_path):
+        for path in path_list:
+            paths = []
+            for neighbour in graph[path[-1]]:
+                if not neighbour in path:
+                    paths.append(path + [neighbour])
+                    if neighbour == end_node:
+                        path_found = True
+                        good_paths.append(path + [neighbour])
+            temp_path_list += paths
+        if temp_path_list == []:
+            no_path = True
+        else:
+            path_list = temp_path_list
+            temp_path_list = []
+    return good_paths
+
+
+def connected_components(graph, mode='breadth'):
     '''
     Returns all traversals of components of an undirected graph
     graph: Input undirected graph ub adjacency list representation
@@ -35,7 +69,7 @@ def connected_components(graph, mode='depth'):
     return components
 
 
-def largest_connected_component_s(graph, mode='depth'):
+def largest_connected_component_s(graph, mode='breadth'):
     '''
     Returns the largest component(s) of an undirected graph
     graph: Input undirected graph ub adjacency list representation
@@ -49,7 +83,7 @@ def largest_connected_component_s(graph, mode='depth'):
     return largest_component_s
 
 
-def pathExists(graph, start_node, end_node, mode='depth'):
+def pathExists(graph, start_node, end_node, mode='breadth'):
     '''
     Returns True/False for if start_node to end_node path exists in the intput graph
     graph     : Input graph in adjacency list representation
