@@ -151,3 +151,40 @@ def print_mat_rep(mat_rep):
             print(element, end=' ')
         print('|')
     print('\\' + blank_print + '/')
+
+
+#Connected islands
+def connection_islands(islands):
+	'''
+	Returns all the connected islands of input grid
+	islands: Input lis of lists, 1 is to be counted as an island, 0 is not
+	'''
+	row_num = len(islands)
+	col_num = len(islands[0])
+	visited = []
+	island_list = []
+	for row in range(row_num):
+		for col in range(col_num):
+			if (islands[row][col] == 1) and (not [row, col] in visited):
+				stack = [[row, col]]
+				island = []
+				while 0 < len(stack):
+					coords = stack.pop(0)
+					visited.append(coords)
+					island.append(coords)
+					r = coords[0]
+					c = coords[1]
+					if r > 0:
+						if (islands[r-1][c] == 1) and (not [r-1, c] in visited) and (not [r-1, c] in stack):
+							stack.append([r-1, c])
+					if r < row_num-1:
+						if (islands[r+1][c] == 1) and (not [r+1, c] in visited) and (not [r+1, c] in stack):
+							stack.append([r+1, c])
+					if c > 0:
+						if (islands[r][c-1] == 1) and (not [r, c-1] in visited) and (not [r, c-1] in stack):
+							stack.append([r, c-1])
+					if c < col_num-1:
+						if (islands[r][c+1] == 1) and (not [r, c+1] in visited) and (not [r, c+1] in stack):
+							stack.append([r, c+1])
+				island_list.append(island)
+	return island_list
